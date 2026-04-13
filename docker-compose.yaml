@@ -1,0 +1,62 @@
+
+services:
+  # ─────────────────────────────────────────────
+  # ChromaDB — Vector Store Server
+  # UI: http://localhost:8001
+  # ─────────────────────────────────────────────
+  chromadb:
+    container_name: rag-chromadb
+    image: chromadb/chroma:latest
+    ports:
+      - "8001:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+      - ANONYMIZED_TELEMETRY=FALSE
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/chroma_db:/chroma/chroma
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 15s
+      start_period: 20s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # Chainlit — RAG Chat UI
+  # UI: http://localhost:8000
+  # ─────────────────────────────────────────────
+  chainlit:
+    container_name: rag-chainlit
+    build:
+      context: ./day08/lab
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./day08/lab/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CHAINLIT_HOST=0.0.0.0
+      - CHAINLIT_PORT=8000
+      # Trỏ ChromaDB client đến service chromadb
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    volumes:
+      # Mount source code (hot-reload khi dev)
+      - ./day08/lab:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      start_period: 40s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  default:
+    name: rag-network

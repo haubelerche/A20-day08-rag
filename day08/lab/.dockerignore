@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# ChromaDB data (mounted as volume)
+chroma_db/
+
+# Logs & reports
+logs/
+reports/
+results/
+
+# Dev artifacts
+*.log
+.DS_Store
+
+# Git
+.git/
+.gitignore

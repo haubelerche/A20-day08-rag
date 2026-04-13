@@ -24,5 +24,12 @@ rank-bm25>=0.2.2                 # BM25 keyword search
 # === Sprint 3: Rerank ===
 # sentence-transformers đã bao gồm CrossEncoder
 
+# === Sprint 4: Evaluation ===
+ragas>=0.1.0                     # RAGAS evaluation framework (faithfulness, relevancy, recall)
+datasets>=2.0.0                  # HuggingFace datasets — dependency của RAGAS 0.1.x
+
+# === Frontend ===
+chainlit>=1.0.0                  # Chat UI (chạy: chainlit run app.py -w)
+
 # === Utils ===
 tqdm>=4.66.0                     # Progress bar khi index nhiều docs

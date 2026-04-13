@@ -1,0 +1,11 @@
+[
+  {
+    "id": "gq_placeholder",
+    "question": "File này sẽ được overwrite khi chạy pipeline với grading_questions.json (public lúc 17:00)",
+    "answer": "PENDING",
+    "sources": [],
+    "chunks_retrieved": 0,
+    "retrieval_mode": "hybrid",
+    "timestamp": "2026-04-13T00:00:00"
+  }
+]
